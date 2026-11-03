@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EasyNet | Kiosk</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: '#163A50',
+                        offwhite: '#F6F7F9',
+                        yellow: '#F4A820',
+                        textgray: '#A1B2C1',
+                        darktext: '#1A1A1A',
+                        pillbg: '#22495F',
+                        whatsapp: '#25D366'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.4s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Kiosk Reset: Prevent scrolling and zooming */
+        html, body { 
+            overflow: hidden; 
+            height: 100vh; 
+            width: 100vw; 
+            touch-action: none; /* Prevents pull-to-refresh on tablets */
+            background-color: #163A50;
+        }
+        
+        /* Subtle radial gradient background effect */
+        .hero-gradient {
+            background: radial-gradient(circle at 80% -20%, rgba(42, 77, 98, 0.7) 0%, rgba(22, 58, 80, 1) 60%);
+        }
+        
+        /* Language pill active/inactive transitions */
+        .lang-btn { transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="font-sans antialiased text-white flex flex-col hero-gradient">
+
+    <!-- Minimal Kiosk Top Bar -->
+    <nav class="w-full px-8 py-6 flex justify-between items-center z-50">
+        <!-- Logo Section -->
+        <div class="flex flex-col">
+            <span class="text-[28px] font-black text-white tracking-tight leading-none mb-1">EasyNet</span>
+            <span class="text-[10px] font-extrabold text-yellow tracking-[0.18em] uppercase leading-none" data-i18n="subtitle">AGADIR TECH RENTALS</span>
+        </div>
+
+        <!-- Working Language Toggle -->
+        <div class="bg-navy/50 border border-white/10 rounded-full p-1.5 flex items-center shadow-inner select-none backdrop-blur-sm">
+            <div id="lang-en" class="lang-btn bg-white text-darktext font-bold text-[15px] px-5 py-2 rounded-full shadow-sm cursor-pointer" onclick="changeLanguage('en')">EN</div>
+            <div id="lang-fr" class="lang-btn text-textgray font-semibold text-[15px] px-5 py-2 cursor-pointer hover:text-white" onclick="changeLanguage('fr')">FR</div>
+            <div id="lang-es" class="lang-btn text-textgray font-semibold text-[15px] px-5 py-2 cursor-pointer hover:text-white" onclick="changeLanguage('es')">ES</div>
+        </div>
+    </nav>
+
+    <!-- Main Kiosk Content Area -->
+    <main class="flex-grow flex items-center justify-center px-8 pb-12 w-full max-w-[1400px] mx-auto gap-12 lg:gap-20">
+        
+        <!-- Left Text Content -->
+        <div class="flex-1 flex flex-col justify-center max-w-[650px]">
+            <!-- Main Heading -->
+            <h1 class="text-[52px] xl:text-[64px] font-black text-white leading-[1.05] mb-6 tracking-tight drop-shadow-lg">
+                <span data-i18n="headline_p1">Low battery? Rent a </span>
+                <span data-i18n="headline_gold" class="text-yellow">power bank</span>
+                <span data-i18n="headline_p2"> instantly.</span>
+            </h1>
+
+            <!-- Subtitle Paragraph -->
+            <p data-i18n="desc" class="text-textgray text-[22px] leading-[1.5] mb-10 font-medium">
+                Stay connected in Agadir. 45 DH per day. Pick up directly from the hotel reception.
+            </p>
+
+            <!-- Step Pills -->
+            <div class="flex items-center gap-3 text-[16px] font-semibold flex-wrap">
+                <div class="bg-pillbg text-white px-5 py-3 rounded-full flex items-center gap-3 shadow-sm border border-white/5">
+                    <i class="fa-solid fa-mobile-screen-button text-yellow"></i> <span data-i18n="step1">Scan & Pay</span>
+                </div>
+                <i class="fa-solid fa-arrow-right text-textgray"></i>
+                <div class="bg-pillbg text-white px-5 py-3 rounded-full flex items-center gap-3 shadow-sm border border-white/5">
+                    <i class="fa-solid fa-user-tie text-yellow"></i> <span data-i18n="step2">Reception</span>
+                </div>
+                <i class="fa-solid fa-arrow-right text-textgray"></i>
+                <div class="bg-pillbg text-white px-5 py-3 rounded-full flex items-center gap-3 shadow-sm border border-white/5">
+                    <i class="fa-solid fa-bolt text-yellow"></i> <span data-i18n="step3">Charge</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Action Card -->
+        <div class="w-[450px] shrink-0">
+            <div class="bg-white rounded-[24px] p-10 shadow-[0_20px_50px_rgba(0,0,0,0.4)] w-full">
+                
+                <div class="flex justify-between items-start mb-2">
+                    <h2 data-i18n="card_title" class="text-[28px] font-black text-navy tracking-tight leading-none">Power Bank</h2>
+                    <i class="fa-solid fa-battery-full text-textgray text-3xl"></i>
+                </div>
+                <p data-i18n="card_desc" class="text-textgray font-medium text-[15px] mb-6 pb-6 border-b border-gray-100">10,000mAh • Universal Cables</p>
+
+                <!-- Price -->
+                <div class="text-[54px] font-black text-darktext leading-none tracking-tighter mb-8 flex items-baseline">
+                    45 DH <span data-i18n="per_day" class="text-[22px] font-bold text-textgray tracking-normal ml-2">/ day</span>
+                </div>
+
+                <!-- Interactive Buttons Section -->
+                <div id="action-buttons" class="flex flex-col gap-4">
+                    <!-- Online Checkout Button (Yellow) -->
+                    <!-- REPLACE href with your Lemon Squeezy link -->
+                    <a href="#" class="w-full bg-yellow text-darktext font-black text-[18px] py-5 rounded-xl hover:bg-[#e39c1d] transition duration-200 shadow-lg shadow-yellow/20 flex justify-center items-center gap-3 active:scale-[0.98]">
+                        <i class="fa-solid fa-credit-card"></i> <span data-i18n="btn_online">Pay Online (45 DH)</span>
+                    </a>
+                    
+                    <!-- Pay Cash Button (Outline) -->
+                    <button id="btn-cash" class="w-full bg-transparent border-2 border-gray-300 text-navy font-black text-[18px] py-4 rounded-xl hover:border-navy hover:bg-gray-50 transition duration-200 flex justify-center items-center gap-3 active:scale-[0.98]">
+                        <i class="fa-solid fa-money-bill-wave text-navy"></i> <span data-i18n="btn_cash">Pay Cash</span>
+                    </button>
+                </div>
+
+                <!-- Success/Instruction Message (Hidden Initially) -->
+                <div id="cash-message" class="hidden animate-fade-in bg-[#f0fdf4] border border-[#bbf7d0] rounded-xl p-6 mt-2">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="bg-whatsapp text-white rounded-full w-14 h-14 flex items-center justify-center mb-4 shadow-md">
+                            <i class="fa-solid fa-check text-2xl"></i>
+                        </div>
+                        <h4 data-i18n="msg_cash_title" class="text-navy font-black text-[20px] mb-2">Cash Payment Selected</h4>
+                        <p data-i18n="msg_cash_desc" class="text-[16px] font-semibold text-navy/80 leading-relaxed">
+                            Please head to the reception to pay cash and collect your power bank.
+                        </p>
+                        
+                        <!-- Reset button for kiosk loop -->
+                        <button onclick="resetKiosk()" class="mt-6 text-textgray text-sm font-bold hover:text-navy underline underline-offset-4 decoration-2">
+                            <i class="fa-solid fa-rotate-left mr-1"></i> <span data-i18n="btn_reset">Start Over</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Application Logic & Translation Engine -->
+    <script>
+        // --- TRANSLATION DICTIONARY ---
+        const translations = {
+            en: {
+                subtitle: "AGADIR TECH RENTALS",
+                headline_p1: "Low battery? Rent a ",
+                headline_gold: "power bank",
+                headline_p2: " instantly.",
+                desc: "Stay connected in Agadir. 45 DH per day. Pick up directly from the hotel reception.",
+                step1: "Scan & Pay",
+                step2: "Reception",
+                step3: "Charge",
+                card_title: "Power Bank",
+                card_desc: "10,000mAh • Universal Cables Included",
+                per_day: "/ day",
+                btn_online: "Pay Online (45 DH)",
+                btn_cash: "Pay Cash",
+                msg_cash_title: "Cash Payment Selected",
+                msg_cash_desc: "Please head to the reception to pay cash and collect your power bank.",
+                btn_reset: "Start Over"
+            },
+            fr: {
+                subtitle: "LOCATION HIGH-TECH AGADIR",
+                headline_p1: "Batterie faible ? Louez une ",
+                headline_gold: "batterie",
+                headline_p2: " instantanément.",
+                desc: "Restez connecté à Agadir. 45 DH par jour. À récupérer directement à la réception de l'hôtel.",
+                step1: "Scannez & Payez",
+                step2: "Réception",
+                step3: "Rechargez",
+                card_title: "Batterie Externe",
+                card_desc: "10 000mAh • Câbles universels inclus",
+                per_day: "/ jour",
+                btn_online: "Payer en Ligne (45 DH)",
+                btn_cash: "Payer en Espèces",
+                msg_cash_title: "Paiement en Espèces",
+                msg_cash_desc: "Veuillez vous rendre à la réception pour payer en espèces et récupérer votre batterie.",
+                btn_reset: "Recommencer"
+            },
+            es: {
+                subtitle: "ALQUILER TECNOLÓGICO AGADIR",
+                headline_p1: "¿Batería baja? Alquila una ",
+                headline_gold: "batería",
+                headline_p2: " al instante.",
+                desc: "Mantente conectado en Agadir. 45 DH por día. Recógelo directamente en la recepción del hotel.",
+                step1: "Escanea y Paga",
+                step2: "Recepción",
+                step3: "Recarga",
+                card_title: "Batería Externa",
+                card_desc: "10,000mAh • Cables universales incluidos",
+                per_day: "/ día",
+                btn_online: "Pagar en Línea (45 DH)",
+                btn_cash: "Pagar en Efectivo",
+                msg_cash_title: "Pago en Efectivo",
+                msg_cash_desc: "Por favor, diríjase a la recepción para pagar en efectivo y recoger su batería.",
+                btn_reset: "Volver a Empezar"
+            }
+        };
+
+        // --- KIOSK UI LOGIC ---
+        const btnCash = document.getElementById('btn-cash');
+        const actionButtons = document.getElementById('action-buttons');
+        const cashMessage = document.getElementById('cash-message');
+        let currentLang = 'en';
+
+        // Handle Cash Button Click
+        btnCash.addEventListener('click', (e) => {
+            e.preventDefault();
+            actionButtons.style.display = 'none';
+            cashMessage.classList.remove('hidden');
+            cashMessage.classList.add('block');
+        });
+
+        // Function to reset the UI for the next customer
+        function resetKiosk() {
+            cashMessage.classList.add('hidden');
+            cashMessage.classList.remove('block');
+            actionButtons.style.display = 'flex';
+        }
+
+        // --- TRANSLATION ENGINE ---
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // 1. Update text for all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            // 2. Update styling for Language Toggle Pills
+            const langs = ['en', 'fr', 'es'];
+            langs.forEach(l => {
+                const btn = document.getElementById(`lang-${l}`);
+                if (l === lang) {
+                    // Active State
+                    btn.classList.add('bg-white', 'text-darktext', 'shadow-sm');
+                    btn.classList.remove('text-textgray', 'hover:text-white');
+                } else {
+                    // Inactive State
+                    btn.classList.remove('bg-white', 'text-darktext', 'shadow-sm');
+                    btn.classList.add('text-textgray', 'hover:text-white');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
